@@ -70,8 +70,6 @@ class ChessController:
             source_piece = self.board_model.get(start_row,start_col)
             destination_piece = self.board_model.get(end_row, end_col)
 
-
-
             # Check if inbounds
             if not self.board_model.is_inbounds(start_row, start_col, end_row, end_col):
                 print("That is not a coordinate on the board, please choose a row and column value beteen 0-7.")
@@ -132,9 +130,11 @@ class ChessController:
                 elif (self.board_model.get(start_row + 1,start_col) == "[]") and (end_row == start_row + 1) and (start_col == end_col):
                     return True
                 
+                else:
+                    return False 
 
             # Check Player 2 Pawn Moves
-            if source_piece == "P2":
+            elif source_piece == "P2":
                 #P2 to be able to make a double jump if in row 6
                 if start_row == 6 and end_col == start_col and self.board_model.get(start_row -1,start_col) == "[]" and self.board_model.get(start_row -2,start_col) == "[]" and (3 < end_row < 6):
                     return True
@@ -149,8 +149,11 @@ class ChessController:
 
                 elif (self.board_model.get(start_row -1,start_col) == "[]") and (end_row == start_row - 1) and (start_col == end_col):
                     return True
+                
+                else:
+                    return False 
 
-            if source_piece == "R1" or source_piece == "R2":
+            elif source_piece == "R1" or source_piece == "R2":
                 #checks that if the column and row are being changed then the code returns false before running the function rook_move
                 if not (((abs(start_row - end_row) > 0) and (abs(start_col - end_col) == 0)) or ((abs(start_row - end_row) == 0) and (abs(start_col - end_col) > 0))):
                     return False 
@@ -161,11 +164,11 @@ class ChessController:
             
                 else:
                     print("You can't make the rook move like that")
+                    return False 
 
-            if source_piece == "B1" or source_piece == "B2":
+            elif source_piece == "B1" or source_piece == "B2":
                 #checks that the bishop slope is 1
                 if not (abs((start_row - end_row)/(start_col - end_col))) == 1:
-                    print("Wrong")
                     return False 
 
                 elif self.bishop_move(start_row, start_col, end_row, end_col):
@@ -173,28 +176,31 @@ class ChessController:
 
                 else:
                     print("You can't make the bishop move like that")
-            
-            if source_piece == "Q1" or source_piece == "Q2":
+                    return False
+
+            elif source_piece == "Q1" or source_piece == "Q2":
                     
                 if self.queen_move(start_row, start_col, end_row, end_col):
                     return True
                 else:
                     print("You can't make the Queen move like that")
+                    return False
 
-            if source_piece == "K1" or source_piece == "K2":
+            elif source_piece == "K1" or source_piece == "K2":
 
                 if self.knight_move(start_row, start_col, end_row, end_col):
                     return True 
                 else:
                     print("You can't make the Knight move like that")
+                    return False
 
-            if source_piece == "KG1" or source_piece == "KG2":
+            elif source_piece == "KG1" or source_piece == "KG2":
                 if self.king_move(start_row, start_col, end_row, end_col):
                     return True
                 
-            else:
-                print("You can't make the King move like that")
-                return False
+                else:
+                    print("You can't make the King move like that")
+                    return False
   
     def rook_move(self, start_row, start_col, end_row, end_col):
 
@@ -211,8 +217,9 @@ class ChessController:
                 x = x + 1
                 if not self.board_model.get(x,y) == "[]":
                     return False
-            return True
-        if (start_col - end_col != 0):
+            return True  
+
+        elif (start_col - end_col != 0):
             #move rook right or left
             if start_col < end_col: 
                 x = end_row
@@ -228,55 +235,61 @@ class ChessController:
 
     def bishop_move(self, start_row, start_col, end_row, end_col):
             
-            loop = abs(end_row - start_row) -1
+        loop = abs(end_row - start_row) -1
            
-            #bishop move diagonally down and right
-            if ((end_row > start_row) and (end_col > start_col)):
-                x = start_row
-                y = start_col
-                for i in range (loop):
-                    x = x + 1
-                    y = y + 1 
-                    if not self.board_model.get(x,y) == "[]":
-                        return False 
-            #bishop move diagonally down and left
-            elif ((end_row > start_row) and (end_col < start_col)):
-                x = start_row
-                y = start_col
-                for i in range (loop):
-                    x = x + 1
-                    y = y - 1 
-                    if not self.board_model.get(x,y) == "[]":
-                        return False 
-            #bishop move diagonally up and right
-            elif ((end_row < start_row) and (end_col > start_col)):
-                x = start_row
-                y = start_col
-                for i in range (loop):
-                    x = x - 1
-                    y = y + 1 
-                    if not self.board_model.get(x,y) == "[]":
-                        return False 
-            #bishop move diagonally up and left
-            elif ((end_row < start_row) and (end_col < start_col)):
-                x = start_row
-                y = start_col
-                for i in range (loop):
-                    x = x - 1
-                    y = y - 1 
-                    if not self.board_model.get(x,y) == "[]":
-                        return False 
+        #bishop move diagonally down and right
+        if ((end_row > start_row) and (end_col > start_col)):
+            x = start_row
+            y = start_col
+            for i in range (loop):
+                x = x + 1
+                y = y + 1 
+                if not self.board_model.get(x,y) == "[]":
+                    return False 
+            return True
+        #bishop move diagonally down and left
+        elif ((end_row > start_row) and (end_col < start_col)):
+            x = start_row
+            y = start_col
+            for i in range (loop):
+                x = x + 1
+                y = y - 1 
+                if not self.board_model.get(x,y) == "[]":
+                    return False 
+            return True
+        #bishop move diagonally up and right
+        elif ((end_row < start_row) and (end_col > start_col)):
+            x = start_row
+            y = start_col
+            for i in range (loop):
+                x = x - 1
+                y = y + 1 
+                if not self.board_model.get(x,y) == "[]":
+                    return False 
+            return True
+
+        #bishop move diagonally up and left
+        elif ((end_row < start_row) and (end_col < start_col)):
+            x = start_row
+            y = start_col
+            for i in range (loop):
+                x = x - 1
+                y = y - 1 
+                if not self.board_model.get(x,y) == "[]":
+                    return False 
             return True
     
     def queen_move(self, start_row, start_col, end_row, end_col):
         #allows queen to move like the rook 
         if ((start_row - end_row != 0) and (start_col - end_col == 0)) or ((start_row - end_row == 0) and (start_col - end_col != 0)):
             return self.rook_move(start_row, start_col, end_row, end_col)
+
         #allows queen to move like the bishop
         elif (abs((start_row - end_row)/(start_col - end_col))) == 1:
             return self.bishop_move(start_row, start_col, end_row, end_col)
 
-        return False
+        else:
+            return False
             
     def knight_move(self, start_row, start_col, end_row, end_col):
         if ((start_row - end_row != 0) and (start_col - end_col == 0)) or ((start_row - end_row == 0) and (start_col - end_col != 0)):
@@ -285,11 +298,14 @@ class ChessController:
             return False
         elif (start_row - 3) < end_row < (start_row + 3) and (start_col - 3) < end_col < (start_col + 3):
             return True
-        
+        else:
+            return False
         
     def king_move(self, start_row, start_col, end_row, end_col):
         if ((start_row - 2) < end_row < (start_row + 2)) and ((start_col - 2) < end_col < (start_col + 2)):
             return True
+        else:
+            return False
          
 
 if __name__ == "__main__":
