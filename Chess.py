@@ -81,18 +81,22 @@ class ChessController:
     def start(self):
         # Main Game Loop
         while True:
-            print(self.board_model)
-            print("It is " + self.player_move + " turn to move a piece")
-    
-            # User Input
-            start_row = int (input ("Row Number Start: "))
-            start_col = int (input ("Column Number Start: "))
-            end_row = int (input ("Row Number Destination: "))
-            end_col = int (input ("Column Number Destination: "))
-            print("\n")
-            
-            source_piece = self.board_model.get(start_row,start_col)
-            destination_piece = self.board_model.get(end_row, end_col)
+            try:
+                print(self.board_model)
+                print("It is " + self.player_move + " turn to move a piece")
+        
+                # User Input
+                start_row = int (input ("Row Number Start: "))
+                start_col = int (input ("Column Number Start: "))
+                end_row = int (input ("Row Number Destination: "))
+                end_col = int (input ("Column Number Destination: "))
+                print("\n")
+                
+                source_piece = self.board_model.get(start_row,start_col)
+                destination_piece = self.board_model.get(end_row, end_col)
+                
+            except ValueError:
+                print("Need to give a number for row and column")
 
             # Check if inbounds
             if not self.board_model.is_inbounds(start_row, start_col, end_row, end_col):
