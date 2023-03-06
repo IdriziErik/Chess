@@ -34,9 +34,9 @@ class BoardModel:
 
 class Piece:
 
-    def __init__(self, piece_type, player_turn, piece_row, piece_col):
+    def __init__(self, piece_type, team, piece_row, piece_col):
         self.piece_type = piece_type
-        self.team = player_turn
+        self.team = team
         self.piece_row = int(piece_row)
         self.piece_col = int(piece_col)
 
@@ -121,7 +121,6 @@ class ChessController:
                 self.king1_check()
                 self.king2_check()
                 self.board_model.move(start_row, start_col, end_row, end_col)
-                
                 self.change_team()
             else:
                 print("Invalid  move, try again")
@@ -130,7 +129,7 @@ class ChessController:
 
         if self.source_piece is not None:
 
-        #ensures players can only move their pieces 
+            #ensures players can only move their pieces 
             if self.player_move == "Player 1" and self.source_piece.team != 1:
                 print("Please select a player 1 piece")
                 return False
@@ -165,7 +164,6 @@ class ChessController:
                     ((abs(start_row - end_row) == 0) and (abs(start_col - end_col) > 0)))):
                         return False 
 
-                    #elif (source_piece == "R1" and "2" in destination_piece) or (source_piece == "R2" and "1" in destination_piece) or (destination_piece == None):
                     elif self.rook_move(start_row, start_col, end_row, end_col):
                         self.source_piece.piece_row = end_row
                         self.source_piece.piece_col = end_col 
